@@ -8,28 +8,53 @@ namespace LCGUI
     public class PlaceOrderScreen : IScreen
     {
         private StoreBL _storeBL;
+        private int _orderID;
+        private List<LineItem> _lineItems = new List<LineItem>();
+        private decimal _total = (decimal)0.00;
+        private string _userInput = "n";
         public PlaceOrderScreen(StoreBL p_storeBL)
         {
             _storeBL = p_storeBL;
+            _orderID = _storeBL.GetNewOrderID();
         }
 
         public void Render()
         {
-            Console.WriteLine("----------------------------------------------------------------------------------------");
-            Console.WriteLine("Order - Enter your choice");
-            Console.WriteLine("----------------------------------------------------------------------------------------");
-            if(Current.CurrentLineItems != null)
+            do
             {
-                foreach(LineItem l in Current.CurrentLineItems)
+                Console.WriteLine("----------------------------------------------------------------------------------------");
+                Console.Write("Product ID: ");
+                int _productID = Int32.Parse(Console.ReadLine());
+                Product product = _storeBL.GetProductByID(_productID);
+                Console.Write("Quantity  : ");
+                int _quantity = Int32.Parse(Console.ReadLine());
+                decimal _subTotal = product.ListPrice * _quantity;
+                LineItem lineItem = new LineItem()
                 {
-                    string pName = _storeBL.GetProductByID(l.ProductID).Name;
-                    Console.WriteLine($"[{l.ProductID}] {pName} / Quantity: {l.Quantity} / Sub total: {l.SubTotal}");
+                    OrderID = _orderID,
+                    ProductID = _productID,
+                    Quantity = _quantity,
+                    SubTotal = _subTotal
+                };
+                _lineItems.Add(lineItem);
+                _total += _subTotal;
+                
+                Console.Clear();
+                Console.WriteLine("----------------------------------------------------------------------------------------");
+                Console.WriteLine($"Order ID : {_orderID}                                                  Total: ${_total}");
+                Console.WriteLine("----------------------------------------------------------------------------------------");
+
+                foreach(LineItem l in _lineItems)
+                {
+                    Console.WriteLine($"[{l.ProductID}] {product.Name} / Quantity: {_quantity} / Sub total: ${_subTotal} ");
                 }
-            }
+                Console.WriteLine("----------------------------------------------------------------------------------------");
+                Console.Write("Continue? (y/n): ");
+                _userInput = Console.ReadLine();
+
+            } while(_userInput == "y");
             Console.WriteLine("----------------------------------------------------------------------------------------");
-            Console.WriteLine("[1] Add item");
-            Console.WriteLine("[2] Place order");
-            Console.WriteLine("[3] Empty");
+            Console.WriteLine("[1] Place order");
             Console.WriteLine("[x] Go Back");            
             Console.WriteLine("----------------------------------------------------------------------------------------");
         }
@@ -38,37 +63,9 @@ namespace LCGUI
         {
             Console.Write("-> ");
             string userInput = Console.ReadLine();
-            int _orderID;
             switch(userInput)
             {
                 case "1":
-                    Console.Write("Product ID: ");
-                    int _productID = Int32.Parse(Console.ReadLine());
-                    Product product = _storeBL.GetProductByID(_productID);
-                    Console.Write("Quantity  : ");
-                    int _quantity = Int32.Parse(Console.ReadLine());
-                    decimal _subTotal = product.ListPrice * _quantity;
-                    _orderID = _storeBL.GetNewOrderID();
-                    LineItem lineItem = new LineItem()
-                    {
-                        OrderID = _orderID,
-                        ProductID = _productID,
-                        Quantity = _quantity,
-                        SubTotal = _subTotal
-                    };
-                    try
-                    {
-                        LineItem newLineItem = _storeBL.AddLineItem(lineItem);
-                        Current.CurrentLineItems.Add(lineItem);
-                    }
-                    catch(Exception e)
-                    {
-                        Console.WriteLine(e);
-                        Console.ReadLine();
-                    }
-
-                    return ScreenType.PlaceOrderScreen;
-                case "2":
                     Order order = new Order()
                     {
                         StoreID = Current.CurrentStoreID,
@@ -77,16 +74,17 @@ namespace LCGUI
                     };
                     try{
                         Order newOrder = _storeBL.AddOrder(order);
-                        Current.CurrentLineItems = null;
+                        foreach(LineItem l in _lineItems)
+                        {
+                            _storeBL.AddLineItem(l);
+                            _storeBL.ChangeInventoryCount(order.StoreID, l.ProductID, l.Quantity*(-1));
+                        }
                     }
                     catch(Exception e)
                     {
                         Console.WriteLine(e);
                     }
                     return ScreenType.OrderHistoryScreen;
-                case "3":
-                    Current.CurrentLineItems = null;
-                    return ScreenType.PlaceOrderScreen;
                 case "x":
                     return ScreenType.MainScreen;
                 default :

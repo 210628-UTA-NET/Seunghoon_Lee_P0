@@ -53,11 +53,11 @@ namespace LCGBL
         List<Order> GetOrdersByCustomerID(int p_customerID);
 
         /// <summary>
-        /// Replenish Inventory
+        /// Change inventory couunt
         /// </summary>
         /// <param name="p_storeID"></param>
         /// <param name="p_productID"></param>
-        void ReplenishInventory(int p_storeID, int p_productID, int p_increment);
+        void ChangeInventoryCount(int p_storeID, int p_productID, int p_increment);
 
         /// <summary>
         /// Get next order ID to be added

@@ -10,7 +10,6 @@ namespace LCGUI
         public static string CurrentStoreName { get; set; }
         public static int CurrentCustomerID { get; set; }
         public static string CurrentCustomerName { get; set; }
-        public static List<LineItem> CurrentLineItems { get; set; }
     }
     class Program
     {

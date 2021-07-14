@@ -212,7 +212,7 @@ namespace LCGDL
             ).ToList();
         }
 
-        public void ReplenishInventory(int p_storeID, int p_productID, int p_increment)
+        public void ChangeInventoryCount(int p_storeID, int p_productID, int p_increment)
         {
             var query =
                 from inventory in _context.Inventories

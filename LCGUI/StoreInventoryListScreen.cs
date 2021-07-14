@@ -44,7 +44,7 @@ namespace LCGUI
                     {
                         Console.Write("Enter the quantity you want to replenish: ");
                         _increment = Console.ReadLine();
-                        _storeBL.ReplenishInventory(Current.CurrentStoreID, Int32.Parse(userInput), Int32.Parse(_increment));
+                        _storeBL.ChangeInventoryCount(Current.CurrentStoreID, Int32.Parse(userInput), Int32.Parse(_increment));
                         return ScreenType.StoreInventoryListScreen;
                     }
                     else 

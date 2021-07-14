@@ -82,11 +82,11 @@ namespace LCGDL
         List<StoreInventory> GetStoreInventory(int p_storeID);
 
         /// <summary>
-        /// Replenish Inventory
+        /// Change inventory count
         /// </summary>
         /// <param name="p_storeID"></param>
         /// <param name="p_productID"></param>
-        void ReplenishInventory(int p_storeID, int p_productID, int p_increment);
+        void ChangeInventoryCount(int p_storeID, int p_productID, int p_increment);
 
         /// <summary>
         /// Get next order ID to be added

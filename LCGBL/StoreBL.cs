@@ -49,9 +49,9 @@ namespace LCGBL
             return _repo.GetOrdersByCustomerID(p_customerID);
         }
 
-        public void ReplenishInventory(int p_storeID, int p_productID, int p_increment)
+        public void ChangeInventoryCount(int p_storeID, int p_productID, int p_increment)
         {
-            _repo.ReplenishInventory(p_storeID, p_productID, p_increment);
+            _repo.ChangeInventoryCount(p_storeID, p_productID, p_increment);
         }
 
         public int GetNewOrderID()
