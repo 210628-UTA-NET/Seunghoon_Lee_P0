@@ -9,6 +9,7 @@ namespace LCGUI
     {
         private StoreBL _storeBL;
         private int _orderID;
+        private List<string> _productNames = new List<string>();
         private List<LineItem> _lineItems = new List<LineItem>();
         private decimal _total = (decimal)0.00;
         private string _userInput = "n";
@@ -26,6 +27,7 @@ namespace LCGUI
                 Console.Write("Product ID: ");
                 int _productID = Int32.Parse(Console.ReadLine());
                 Product product = _storeBL.GetProductByID(_productID);
+                _productNames.Add(product.Name);
                 Console.Write("Quantity  : ");
                 int _quantity = Int32.Parse(Console.ReadLine());
                 decimal _subTotal = product.ListPrice * _quantity;
@@ -44,9 +46,11 @@ namespace LCGUI
                 Console.WriteLine($"Order ID : {_orderID}                                                  Total: ${_total}");
                 Console.WriteLine("----------------------------------------------------------------------------------------");
 
-                foreach(LineItem l in _lineItems)
+                for(int i = 0; i <_lineItems.Count; i++)
                 {
-                    Console.WriteLine($"[{l.ProductID}] {product.Name} / Quantity: {_quantity} / Sub total: ${_subTotal} ");
+                    Console.WriteLine(
+                        $"[{_lineItems[i].ProductID}] {_productNames[i]} / Quantity: {_lineItems[i].Quantity} / Sub total: ${_lineItems[i].SubTotal}"
+                    );
                 }
                 Console.WriteLine("----------------------------------------------------------------------------------------");
                 Console.Write("Continue? (y/n): ");
