@@ -17,4 +17,8 @@ obj/
 Reference/
 .vscode/launch.json
 .vscode/tasks.json
+.vs/
+
+# Configuration DB connection
 LCGUI/AppSetting.json
+
