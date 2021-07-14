@@ -74,7 +74,8 @@ namespace LCGUI
                     {
                         StoreID = Current.CurrentStoreID,
                         CustomerID = Current.CurrentCustomerID,
-                        OrderDate = DateTime.Now
+                        OrderDate = DateTime.Now,
+                        Total = _total
                     };
                     try{
                         Order newOrder = _storeBL.AddOrder(order);

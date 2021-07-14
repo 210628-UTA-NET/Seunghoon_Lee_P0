@@ -269,7 +269,8 @@ namespace LCGDL
                 {
                     StoreId = p_order.StoreID,
                     CustomerId = p_order.CustomerID,
-                    OrderDate = p_order.OrderDate
+                    OrderDate = p_order.OrderDate,
+                    Total = p_order.Total
                 }
             );
 
