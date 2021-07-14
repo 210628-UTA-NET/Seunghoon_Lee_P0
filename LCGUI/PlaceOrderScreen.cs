@@ -64,6 +64,7 @@ namespace LCGUI
                     catch(Exception e)
                     {
                         Console.WriteLine(e);
+                        Console.ReadLine();
                     }
 
                     return ScreenType.PlaceOrderScreen;
